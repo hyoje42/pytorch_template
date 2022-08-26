@@ -4,7 +4,7 @@ import sys
 from torch.utils.data import DataLoader
 
 # custom
-from dataset.dataset import Dataset_hint
+from dataset.dataset import Dataset_custom
 from trainers.trainer import Trainer_Base
 from utils.config import parse_args
 from utils.util import current_time, set_backend
@@ -16,8 +16,8 @@ def main():
     set_backend(cfg)
 
     ######## Dataset ########
-    train_dataset = Dataset_hint(cfg, mode='train')
-    valid_dataset = Dataset_hint(cfg, mode='valid')
+    train_dataset = Dataset_custom(cfg, mode='train')
+    valid_dataset = Dataset_custom(cfg, mode='valid')
 
     train_loader = DataLoader(
         train_dataset, shuffle=True, 

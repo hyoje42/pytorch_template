@@ -6,7 +6,7 @@ import torchvision.transforms as transforms
 
 from utils.config import Config
 
-class Dataset_hint(Dataset):
+class Dataset_custom(Dataset):
     """
 
     """
