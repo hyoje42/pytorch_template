@@ -1,0 +1,13 @@
+# dir
+.vscode
+exps
+
+# files
+*.pyc
+*.json
+*.*.pyc
+__pycache__/*
+*/__pycache__
+*/__pycache__/*
+*.ipynb
+*.sh
