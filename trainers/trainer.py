@@ -26,10 +26,6 @@ class Trainer_Base(object):
     def _set_loss_optimizer(self):
         pass
     
-    def set_loader(self, train_loader, valid_loader):
-        self.train_loader = train_loader
-        self.valid_loader = valid_loader
-
     def _set_meters(self):
         self.meters: Dict[str, AverageMeter] = {}
         self.meters['batch_time'] = AverageMeter('Time', ':.1f')
@@ -41,23 +37,11 @@ class Trainer_Base(object):
     def update_log(self, losses: Dict[str, Tensor], progress: ProgressMeter, size: int):
         for key in losses.keys():
             if key not in progress.keys():
-                progress.add(key, fmt=':.4f', mode='avg_only')
+                progress.add(key, fmt=':.4f', mode='avg')
             progress.update(key, val=losses[key].item(), n=size)
         
     def state_dict(self):
-        state_dict = {
-            'step': self.step,
-            'epoch': self.epoch,
-            'config': self.cfg,
-            'optim_G': self.optim_G.state_dict(),
-            'optim_D': self.optim_D.state_dict(),
-        }
-        state_dict.update({
-            'netG': self.netG.state_dict(),
-            'netD': self.netD.state_dict(),
-        })
-            
-        return state_dict
+        pass
 
     def save(self, mode='step'):
         """
@@ -70,7 +54,7 @@ class Trainer_Base(object):
             path = f"{self.cfg.save_dir}/model"
 
         path += ".pth"
-        torch.save(self.state_dict, path)
+        torch.save(self.state_dict(), path)
 
     def write_tb(self, meters: Dict[str, AverageMeter], keys: List[str], name: str = 'train'):
         """
@@ -90,6 +74,7 @@ class Trainer_Base(object):
             num: the number of visualized images.
         """
         h, w = images[0].shape[-2:]
+        images = list(map(lambda x: x.detach().cpu(), images))
         concat = torch.cat(images, dim=0).reshape(len(images), -1, 3, h, w)
         if num is not None:
             concat = concat[:, :num, :, :, :]

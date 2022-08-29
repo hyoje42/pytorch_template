@@ -35,7 +35,6 @@ def main():
 
     # ######## Model ########
     trainer = Trainer_Base(cfg)
-    trainer.set_loader(train_loader, valid_loader)
     
     for epoch in range(1, cfg.epochs+1):
         # trainer.train_loop(epoch)

@@ -77,8 +77,8 @@ class ProgressMeter(object):
     def __init__(self, meters: Optional[Dict[str, AverageMeter]] = None):
         self.meters: Dict[str, AverageMeter] = {} if meters is None else meters
 
-    def display(self, batch):
-        entries = [f"Step [{batch}]"]
+    def display(self, batch, desc="Step "):
+        entries = [f"{desc}[{batch}]"]
         entries += [str(meter) for meter in self.meters.values()]
         print('\t'.join(entries))
         return '\t'.join(entries)
